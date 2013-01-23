@@ -1,0 +1,50 @@
+OASISFormat: 0.3
+OCamlVersion: >= 3.12
+Name:        alberto
+Version:     0.1
+Synopsis:    OCaml interface to Erlang ports
+Authors:     Sergei Lebedev <lebedev@selectel.org>
+License:     LGPL-2.1 with OCaml linking exception
+Plugins:     DevFiles (0.3), META (0.3)
+BuildTools:  ocamlbuild
+
+Flag examples
+  Description: Build examples
+  Default:     false
+
+Library alberto
+  Path:            src
+  BuildDepends:    binary, camlp4, num
+  Modules:         Alberto
+  NativeOpt:       -w @a
+  ByteOpt:         -w @a
+
+Executable test
+  Path:           .
+  Build$:         flag(tests)
+  Install:        false
+  CompiledObject: best
+  MainIs:         tests.ml
+  BuildDepends:   binary, num, kaputt, kaputt.num
+  NativeOpt:      -w @a
+  ByteOpt:        -w @a
+
+Executable port_simple
+  Path:           examples
+  Build$:         flag(examples)
+  Install:        false
+  CompiledObject: best
+  MainIs:         port_simple.ml
+  BuildDepends:   alberto, binary, num
+  NativeOpt:      -w @a
+  ByteOpt:        -w @a
+
+Executable port_lwt
+  Path:           examples
+  Build$:         flag(examples)
+  Install:        false
+  CompiledObject: best
+  MainIs:         port_lwt.ml
+  BuildDepends:   alberto, binary, lwt.unix, num
+  NativeOpt:      -w @a
+  ByteOpt:        -w @a

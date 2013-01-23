@@ -1,0 +1,6 @@
+_build
+_dep
+setup.data
+setup.log
+*.ba*
+*.native
