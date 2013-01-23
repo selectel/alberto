@@ -1,8 +1,18 @@
 (** Tests for Alberto module. *)
 
 open Kaputt.Abbreviations
-open Alberto_utils
 
+module String = struct
+  include String
+
+  let resize s n =
+    if String.length s > n
+    then String.sub s 0 n
+    else
+      let s' = String.make n '\000' in
+      String.blit s 0 s' 0 (String.length s);
+      s'
+end
 
 module ErlGen = struct
   module G = Gen
@@ -250,9 +260,6 @@ Test.add_random_test
 ;;
 
 
-let open Test in
-let oc = open_out "build.xml" in begin
-    launch_tests ~output:(Xml_junit_output oc) ();
-    close_out oc
-  end
+let () =
+  Test.launch_tests ()
 ;;

@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: d3b75476838659867c5bfb4cfe7db43a)
+# DO NOT EDIT (digest: ab8ea4ccbdba43ad5bdaa63d4aa65071)
 # Ignore VCS directories, you can use the same kind of rule outside 
 # OASIS_START/STOP if you want to exclude directories that contains 
 # useless stuff for the build process
@@ -19,45 +19,49 @@
 <src/*.ml{,i}>: oasis_library_alberto_byte
 <src/alberto.{cma,cmxa}>: oasis_library_alberto_native
 <src/*.ml{,i}>: oasis_library_alberto_native
+<src/*.ml{,i}>: pkg_binary
 <src/*.ml{,i}>: pkg_num
 <src/*.ml{,i}>: pkg_camlp4
-<src/*.ml{,i}>: pkg_binary
-# Executable port_lwt
-<examples/port_lwt.{native,byte}>: oasis_executable_port_lwt_byte
-<examples/*.ml{,i}>: oasis_executable_port_lwt_byte
-<examples/port_lwt.{native,byte}>: oasis_executable_port_lwt_native
-<examples/*.ml{,i}>: oasis_executable_port_lwt_native
-<examples/port_lwt.{native,byte}>: use_alberto
-<examples/port_lwt.{native,byte}>: pkg_num
-<examples/port_lwt.{native,byte}>: pkg_lwt.unix
-<examples/port_lwt.{native,byte}>: pkg_camlp4
-<examples/port_lwt.{native,byte}>: pkg_binary
-<examples/*.ml{,i}>: pkg_lwt.unix
+# Executable test
+<tests.{native,byte}>: oasis_executable_test_byte
+<*.ml{,i}>: oasis_executable_test_byte
+<tests.{native,byte}>: oasis_executable_test_native
+<*.ml{,i}>: oasis_executable_test_native
+<tests.{native,byte}>: use_alberto
+<tests.{native,byte}>: pkg_binary
+<tests.{native,byte}>: pkg_num
+<tests.{native,byte}>: pkg_kaputt
+<tests.{native,byte}>: pkg_kaputt.num
+<tests.{native,byte}>: pkg_camlp4
+<*.ml{,i}>: use_alberto
+<*.ml{,i}>: pkg_binary
+<*.ml{,i}>: pkg_num
+<*.ml{,i}>: pkg_kaputt
+<*.ml{,i}>: pkg_kaputt.num
+<*.ml{,i}>: pkg_camlp4
 # Executable port_simple
 <examples/port_simple.{native,byte}>: oasis_executable_port_simple_byte
 <examples/*.ml{,i}>: oasis_executable_port_simple_byte
 <examples/port_simple.{native,byte}>: oasis_executable_port_simple_native
 <examples/*.ml{,i}>: oasis_executable_port_simple_native
 <examples/port_simple.{native,byte}>: use_alberto
+<examples/port_simple.{native,byte}>: pkg_binary
 <examples/port_simple.{native,byte}>: pkg_num
 <examples/port_simple.{native,byte}>: pkg_camlp4
-<examples/port_simple.{native,byte}>: pkg_binary
+# Executable port_lwt
+<examples/port_lwt.{native,byte}>: oasis_executable_port_lwt_byte
+<examples/*.ml{,i}>: oasis_executable_port_lwt_byte
+<examples/port_lwt.{native,byte}>: oasis_executable_port_lwt_native
+<examples/*.ml{,i}>: oasis_executable_port_lwt_native
+<examples/port_lwt.{native,byte}>: use_alberto
+<examples/port_lwt.{native,byte}>: pkg_binary
+<examples/port_lwt.{native,byte}>: pkg_lwt.unix
+<examples/port_lwt.{native,byte}>: pkg_num
+<examples/port_lwt.{native,byte}>: pkg_camlp4
 <examples/*.ml{,i}>: use_alberto
+<examples/*.ml{,i}>: pkg_binary
+<examples/*.ml{,i}>: pkg_lwt.unix
 <examples/*.ml{,i}>: pkg_num
 <examples/*.ml{,i}>: pkg_camlp4
-<examples/*.ml{,i}>: pkg_binary
-# Executable test
-<tests.{native,byte}>: oasis_executable_test_byte
-<*.ml{,i}>: oasis_executable_test_byte
-<tests.{native,byte}>: oasis_executable_test_native
-<*.ml{,i}>: oasis_executable_test_native
-<tests.{native,byte}>: pkg_num
-<tests.{native,byte}>: pkg_kaputt.num
-<tests.{native,byte}>: pkg_kaputt
-<tests.{native,byte}>: pkg_binary
-<*.ml{,i}>: pkg_num
-<*.ml{,i}>: pkg_kaputt.num
-<*.ml{,i}>: pkg_kaputt
-<*.ml{,i}>: pkg_binary
 # OASIS_STOP
 "src/alberto.ml": syntax_camlp4o

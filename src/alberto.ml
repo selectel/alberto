@@ -18,6 +18,7 @@ type t = [ `Int of int
 (* +-------+
    | Utils |
    +-------+ *)
+
 module Binary = Binary.BE
 
 let ( & ) f x = f x
@@ -46,7 +47,7 @@ and pack_int32 n =
 
 
 (** [big_int_digits n] returns a list of digits of a given number [n]. *)
-let rec big_int_digits n =
+let big_int_digits n =
   let offset = big_int_of_int 256 in
   let rec aux n l =
     if eq_big_int n zero_big_int then
@@ -128,12 +129,6 @@ end
 
 module String = struct
   include String
-
-  (** [explode s] returns the list of characters in the string [s]. *)
-  let explode s =
-    let rec exp i l =
-      if i < 0 then l else exp (i - 1) (s.[i] :: l) in
-    exp (length s - 1) []
 
   let resize s n =
     let s' = make n '\000' in

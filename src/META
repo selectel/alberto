@@ -1,10 +1,12 @@
 # OASIS_START
-# DO NOT EDIT (digest: 199736c1f85134a19341f83e8d8f060c)
+# DO NOT EDIT (digest: 2dade0d7a96eb87ede16c9f3d14f30b8)
 version = "0.1"
 description = "OCaml interface to Erlang ports"
 requires = "binary camlp4 num"
 archive(byte) = "alberto.cma"
+archive(byte, plugin) = "alberto.cma"
 archive(native) = "alberto.cmxa"
+archive(native, plugin) = "alberto.cmxs"
 exists_if = "alberto.cma"
 # OASIS_STOP
 
