@@ -1,7 +1,26 @@
-Alberto
-=======
+```
+         __
+        /  \
+       / ..|\
+      (_\  |_)
+      /  \@'    Alberto!
+     /     \         0.1
+_  _/  `   |
+\\/  \  | _\
+ \   /_ || \\_
+  \____)|_) \_)
+```
 
 Alberto is a simple OCaml library for writing Erlang port drivers.
+
+Installation
+------------
+
+The simplest way to get `alberto` is to use [`OPAM`](opam.ocamlpro.com):
+
+```bash
+opam install alberto
+```
 
 Example
 -------
@@ -46,3 +65,6 @@ echo.erl: "Hello world!"
 echo.erl: "Hello world!"
 echo.erl: "Hello world!"
 ```
+
+**Note**: to build examples in the `examples/` directory configure
+`alberto` with `--enable-examples` flag.

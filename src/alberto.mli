@@ -1,4 +1,15 @@
-(** Alberto knows how to encode some BERT *)
+(** Alberto knows how to handle Erlang.
+
+    Alberto is an implementation of
+    {{: http://erlang.org/doc/apps/erts/erl_ext_dist.html} Erlang External Term Format},
+    which is a protocol, used by Erlang nodes to communicate with so
+    called {e ports}. See Erlang
+    {{: http://www.erlang.org/doc/tutorial/c_port.html} documentation}
+    for details.
+
+    @author Sergei Lebedev <superbobry@gmail.com>
+    @version 0.1
+*)
 
 open Big_int
 
