@@ -11,7 +11,11 @@ _  _/  `   |
   \____)|_) \_)
 ```
 
-Alberto is a simple OCaml library for writing Erlang port drivers.
+Alberto is an implementation of
+[Erlang External Term Format](http://erlang.org/doc/apps/erts/erl_ext_dist.html),
+a protocol, used by Erlang nodes to communicate with so called *ports*. See
+Erlang [documentation](http://www.erlang.org/doc/tutorial/c_port.html) for
+details.
 
 Installation
 ------------
@@ -26,7 +30,7 @@ Example
 -------
 
 On Erlang part we have a simple echo server, which sends `<<"Hello world!">>`
-to the port driver and echoes whatever comes back to stdout:
+to the port and echoes whatever comes back to stdout:
 
 ```erlang
 #!/usr/bin/env escript
