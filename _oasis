@@ -3,7 +3,7 @@ OCamlVersion: >= 3.12
 Name:        alberto
 Version:     0.1
 Synopsis:    OCaml interface to Erlang ports
-Authors:     Sergei Lebedev <lebedev@selectel.org>
+Authors:     Sergei Lebedev <superbobry@gmail.com>
 License:     LGPL-2.1 with OCaml linking exception
 Plugins:     DevFiles (0.3), META (0.3)
 BuildTools:  ocamlbuild
