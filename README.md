@@ -16,7 +16,7 @@ Alberto is a simple OCaml library for writing Erlang port drivers.
 Installation
 ------------
 
-The simplest way to get `alberto` is to use [`OPAM`](opam.ocamlpro.com):
+The simplest way to get `alberto` is to use [`OPAM`](http://opam.ocamlpro.com):
 
 ```bash
 opam install alberto
