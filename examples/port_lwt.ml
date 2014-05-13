@@ -13,18 +13,17 @@ module Alberto_lwt : sig
       executes a given key function [f] and sends back the results. *)
 end = struct
   open Lwt
-  open Lwt_io
 
   let rec read_term ic =
-    BE.read_int stdin >>= fun len ->
+    Lwt_io.BE.read_int ic >>= fun len ->
     let buf = String.create len in
-    read_into_exactly ic buf 0 len >>= fun _ ->
+    Lwt_io.read_into_exactly ic buf 0 len >>= fun _ ->
     return (Alberto.decode_exn buf)
 
   and write_term oc term =
     let buf = Alberto.encode_exn term in
-    BE.write_int stdout (String.length buf) >>= fun () ->
-    write oc buf >>= fun () -> flush oc
+    Lwt_io.BE.write_int oc (String.length buf) >>= fun () ->
+    Lwt_io.write oc buf >>= fun () -> Lwt_io.flush oc
 
   and interact f =
     let rec transform state = function
@@ -36,14 +35,13 @@ end = struct
                   `Tuple [term; `String (Printexc.to_string exn)]]
         in (state, term)
     and loop state =
-      read_term stdin >>= fun term ->
+      read_term Lwt_io.stdin >>= fun term ->
       let (state, term) = transform state term in
-      write_term stdout term >>= fun () -> loop state
-    in catch (fun () -> loop 0) (fun exn ->
-      match exn with
-        | End_of_file -> exit 1
-        | _ -> raise exn
-    )
+      write_term Lwt_io.stdout term >>= fun () -> loop state
+    in Lwt.catch (fun () -> loop 0) (fun exn ->
+        match exn with
+          | End_of_file -> exit 1
+          | _ -> raise exn)
 end
 
 
