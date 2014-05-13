@@ -19,29 +19,29 @@ type t = [ `Int of int
    | Utils |
    +-------+ *)
 
-module Binary = Binary.BE
+module BE = EndianString.BigEndian
 
 let ( & ) f x = f x
 let (<| ) f x = f x
 let ( |>) x f = f x
 
-let failwith fmt = Printf.kprintf failwith fmt
+let failwithf fmt = Printf.kprintf failwith fmt
 
 
 (** Shortcuts for some of the Binary functions. *)
 let pack_byte n =
   let buf = String.create 1 in begin
-    Binary.pack_unsigned_8 ~buf ~pos:0 n;
+    BE.set_int8 buf 0 n;
     buf
   end
 and pack_word n =
   let buf = String.create 2 in begin
-    Binary.pack_unsigned_16 ~buf ~pos:0 n;
+    BE.set_int16 buf 0 n;
     buf
   end
 and pack_int32 n =
   let buf = String.create 4 in begin
-    Binary.pack_signed_32 ~buf ~pos:0 (Int32.of_int n);
+    BE.set_int32 buf 0 (Int32.of_int n);
     buf
   end
 
@@ -83,20 +83,15 @@ module Stream = struct
 
   (** [take_byte st] extracts and returns a 1 byte unsigned integer
       from stream [st]. *)
-  let take_byte st =
-    let buf = take_string 1 st in Binary.unpack_unsigned_8 ~buf ~pos:0
+  let take_byte st = BE.get_uint8 (take_string 1 st) 0
 
   (** [take_word st] extracts and returns a 2 byte unsigned integer
       from stream [st]. *)
-  let take_word st =
-    let buf = take_string 2 st in
-    Binary.unpack_unsigned_16 ~buf ~pos:0
+  let take_word st = BE.get_uint16 (take_string 2 st) 0
 
   (** [take_int32 st] extracts and returns a 4 byte signed integer from
       stream [st]. *)
-  let take_int32 st =
-    let buf = take_string 4 st in
-    Binary.unpack_signed_32 ~buf ~pos:0 |> Int32.to_int
+  let take_int32 st = BE.get_int32 (take_string 4 st) 0 |> Int32.to_int
 
   (** [take_big len st] extracts and returns a [!Bignum] of length
       [len] from stream [st]. *)
@@ -106,7 +101,7 @@ module Stream = struct
       | 0 -> n
       | _ ->
         if idx < 0 then
-          failwith "Invalid length: %i" idx
+          failwithf "Invalid length: %i" idx
         else begin
           let digit = take_byte st in
           aux (idx - 1)
@@ -121,7 +116,7 @@ module Stream = struct
       | 0 -> List.rev l
       | _ ->
         if idx < 0 then
-          failwith "Invalid length: %i" idx
+          failwithf "Invalid length: %i" idx
         else (f st) :: l |> aux (idx - 1)
     in aux len []
 end
@@ -167,20 +162,20 @@ let rec parse = parser
     if len < 256 then
       `Atom (S.take_string len st)
     else
-      failwith "ATOM_EXT length exceeded %i > 256" len
+      failwithf "ATOM_EXT length exceeded %i > 256" len
 
   (* REFERENCE_EXT *)
   | [< ''\101'; node = parse; id = S.take_string 4; creation = S.take_byte >] ->
     let node = match node with
       | `Atom s -> s
-      | #t -> failwith "Unexpected REFERENCE_EXT format"
+      | #t -> failwithf "Unexpected REFERENCE_EXT format"
     in `Reference (node, id, creation)
 
   (* PORT_EXT *)
   | [< ''\102'; node = parse; id = S.take_int32; creation = S.take_byte >] ->
     let node = match node with
       | `Atom s -> s
-      | #t -> failwith "Unexpected PORT_EXT format"
+      | #t -> failwithf "Unexpected PORT_EXT format"
     in `Port (node, id, creation)
 
   (* PID_EXT *)
@@ -188,7 +183,7 @@ let rec parse = parser
        creation = S.take_byte >] ->
     let node = match node with
       | `Atom s -> s
-      | #t -> failwith "Unexpected PID_EXT format"
+      | #t -> failwithf "Unexpected PID_EXT format"
     in `PID (node, id, serial, creation)
 
   (* SMALL_TUPLE_EXT *)
@@ -226,7 +221,7 @@ let rec parse = parser
        id = S.take_string (len * 4) >] ->
     let node = match node with
       | `Atom s -> s
-      | #t -> failwith "Unexpected NEW_REFERENCE_EXT format"
+      | #t -> failwithf "Unexpected NEW_REFERENCE_EXT format"
     in `NewReference (node, creation, id)
 
   (* FUN_EXT *)
@@ -268,7 +263,7 @@ let rec serialize buf term =
         add pack_word length;
         add_string buf s
       ) else
-        failwith "ATOM_EXT length exceeded %i > 255" length
+        failwithf "ATOM_EXT length exceeded %i > 255" length
     | `Reference (node, id, creation) ->
       begin
         add pack_byte 101;
@@ -368,7 +363,7 @@ let decode_exn s =
       let stream = S.of_string s in
       let (_ : char) = S.next stream in parse stream
     | n   ->
-      failwith "Erlang binary doesn't start with 131: %i" (int_of_char n)
+      failwithf "Erlang binary doesn't start with 131: %i" (int_of_char n)
 
 and encode_exn term =
   let buf = Buffer.create 256 in begin

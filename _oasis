@@ -1,12 +1,12 @@
-OASISFormat: 0.3
-OCamlVersion: >= 3.12
-Name:        alberto
-Version:     0.1
-Synopsis:    OCaml interface to Erlang ports
-Authors:     Sergei Lebedev <superbobry@gmail.com>
-License:     LGPL-2.1 with OCaml linking exception
-Plugins:     DevFiles (0.3), META (0.3)
-BuildTools:  ocamlbuild
+OASISFormat:  0.3
+OCamlVersion: >= 4.01.0
+Name:         alberto
+Version:      0.2
+Synopsis:     OCaml interface to Erlang ports
+Authors:      Sergei Lebedev <superbobry@gmail.com>
+License:      LGPL-2.1 with OCaml linking exception
+Plugins:      DevFiles (0.3), META (0.3)
+BuildTools:   ocamlbuild
 
 Flag examples
   Description: Build examples
@@ -14,7 +14,7 @@ Flag examples
 
 Library alberto
   Path:            src
-  BuildDepends:    binary, camlp4, num
+  BuildDepends:    ocplib-endian, camlp4, num
   Modules:         Alberto
   NativeOpt:       -w @a
   ByteOpt:         -w @a
@@ -25,7 +25,7 @@ Executable test
   Install:        false
   CompiledObject: best
   MainIs:         tests.ml
-  BuildDepends:   alberto, binary, num, kaputt, kaputt.num
+  BuildDepends:   alberto, ocplib-endian, num, kaputt, kaputt.num
   NativeOpt:      -w @a
   ByteOpt:        -w @a
 
@@ -35,7 +35,7 @@ Executable port_simple
   Install:        false
   CompiledObject: best
   MainIs:         port_simple.ml
-  BuildDepends:   alberto, binary, num
+  BuildDepends:   alberto, ocplib-endian, num
   NativeOpt:      -w @a
   ByteOpt:        -w @a
 
@@ -45,6 +45,6 @@ Executable port_lwt
   Install:        false
   CompiledObject: best
   MainIs:         port_lwt.ml
-  BuildDepends:   alberto, binary, lwt.unix, num
+  BuildDepends:   alberto, ocplib-endian, lwt.unix, num
   NativeOpt:      -w @a
   ByteOpt:        -w @a
