@@ -3,6 +3,14 @@ alberto Changelog
 
 Here you can see the full list of changes between each alberto release.
 
+Version 0.2
+-----------
+
+Bugfix release, released on May 13th, 2014
+
+- Switched to 'ocplib-endian' for serialization of integral types.
+
+
 Version 0.1
 -----------
 
