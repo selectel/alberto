@@ -1,5 +1,7 @@
 opam-version: "1"
+name: "alberto"
 maintainer: "superbobry@gmail.com"
+license: "LGPL-2.1+ with OCaml linking exception"
 build: [
   ["./configure" "--prefix" prefix]
   [make]
