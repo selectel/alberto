@@ -1,7 +1,7 @@
 OASISFormat:  0.3
 OCamlVersion: >= 4.01.0
 Name:         alberto
-Version:      0.2
+Version:      0.3
 Synopsis:     OCaml interface to Erlang ports
 Authors:      Sergei Lebedev <superbobry@gmail.com>
 License:      LGPL-2.1 with OCaml linking exception
@@ -16,8 +16,8 @@ Library alberto
   Path:            src
   BuildDepends:    ocplib-endian, camlp4, num
   Modules:         Alberto
-  NativeOpt:       -w @a
-  ByteOpt:         -w @a
+  NativeOpt:       -w @a -warn-error -a
+  ByteOpt:         -w @a -warn-error -a
 
 Executable test
   Path:           .
@@ -26,8 +26,8 @@ Executable test
   CompiledObject: best
   MainIs:         tests.ml
   BuildDepends:   alberto, ocplib-endian, num, kaputt, kaputt.num
-  NativeOpt:      -w @a
-  ByteOpt:        -w @a
+  NativeOpt:      -w @a -warn-error -a
+  ByteOpt:        -w @a -warn-error -a
 
 Executable port_simple
   Path:           examples
@@ -36,8 +36,8 @@ Executable port_simple
   CompiledObject: best
   MainIs:         port_simple.ml
   BuildDepends:   alberto, ocplib-endian, num
-  NativeOpt:      -w @a
-  ByteOpt:        -w @a
+  NativeOpt:      -w @a -warn-error -a
+  ByteOpt:        -w @a -warn-error -a
 
 Executable port_lwt
   Path:           examples
@@ -46,5 +46,5 @@ Executable port_lwt
   CompiledObject: best
   MainIs:         port_lwt.ml
   BuildDepends:   alberto, ocplib-endian, lwt.unix, num
-  NativeOpt:      -w @a
-  ByteOpt:        -w @a
+  NativeOpt:      -w @a -warn-error -a
+  ByteOpt:        -w @a -warn-error -a

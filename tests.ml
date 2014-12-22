@@ -2,17 +2,19 @@
 
 open Kaputt.Abbreviations
 
+
 module String = struct
   include String
 
   let resize s n =
-    if String.length s > n
-    then String.sub s 0 n
+    if length s > n
+    then sub s 0 n
     else
-      let s' = String.make n '\000' in
-      String.blit s 0 s' 0 (String.length s);
-      s'
+      let buf = Bytes.make n '\000' in
+      blit s 0 buf 0 (length s);
+      Bytes.to_string buf
 end
+
 
 module ErlGen = struct
   module G = Gen
@@ -55,7 +57,8 @@ module ErlGen = struct
   let large_big = G.map1 (fun n -> `Bignum n) Alberto.to_string
     (KaputtNums.Generator.big_int pos_int16)
   let new_reference = G.map1
-    (fun (n, c) -> `NewReference (n, c, String.(create ((length n) * 4))))
+    (fun (n, c) -> `NewReference
+        (n, c, Bytes.(to_string @@ create ((length n) * 4))))
     Alberto.to_string
     G.(zip2 (word pos_int8) pos_int8)
   let bit_binary = G.map1 (fun b -> `BitBinary b) Alberto.to_string

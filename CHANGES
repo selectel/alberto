@@ -3,6 +3,12 @@ alberto Changelog
 
 Here you can see the full list of changes between each alberto release.
 
+Version 0.3
+
+Bugfix release, relased on December 23rd, 2014
+
+- Eliminated warnings produced by OCaml 4.02.
+
 Version 0.2
 -----------
 

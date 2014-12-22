@@ -21,26 +21,24 @@ type t = [ `Int of int
 
 module BE = EndianString.BigEndian
 
-let ( & ) f x = f x
 let (<| ) f x = f x
-let ( |>) x f = f x
 
 let failwithf fmt = Printf.kprintf failwith fmt
 
 
 (** Shortcuts for some of the Binary functions. *)
 let pack_byte n =
-  let buf = String.create 1 in begin
+  let buf = Bytes.create 1 in begin
     BE.set_int8 buf 0 n;
     buf
   end
 and pack_word n =
-  let buf = String.create 2 in begin
+  let buf = Bytes.create 2 in begin
     BE.set_int16 buf 0 n;
     buf
   end
 and pack_int32 n =
-  let buf = String.create 4 in begin
+  let buf = Bytes.create 4 in begin
     BE.set_int32 buf 0 (Int32.of_int n);
     buf
   end
@@ -65,7 +63,7 @@ module Stream = struct
       or fewer characters. *)
   let rec take n st =
     if n > 0 then
-      icons (next st) <| slazy (fun _ -> take (n - 1) st)
+      slazy (fun _ -> take (n - 1) st) |> icons (next st)
     else
       sempty
 
@@ -77,9 +75,9 @@ module Stream = struct
       Buffer.contents buf
     end
 
-  (** [take_string len st] extracts and returns a string of length [len]
+  (** [take_string len st] extracts and returns a string of a given [length]
       from stream [st]. *)
-  let take_string len st = take len st |> to_string
+  let take_string length st = take length st |> to_string ~length
 
   (** [take_byte st] extracts and returns a 1 byte unsigned integer
       from stream [st]. *)
@@ -236,7 +234,7 @@ let rec parse = parser
     end
 
   (* Unknown tag? *)
-  | [< tag = S.take_string 1 >] -> raise & Invalid_argument tag
+  | [< tag = S.take_string 1 >] -> invalid_arg tag
 
 
 (* +------------+
@@ -416,7 +414,7 @@ let rec read_term ic =
     try
       input_binary_int ic
     with End_of_file -> exit 0 in
-  let buf = String.create len in begin
+  let buf = Bytes.create len in begin
     really_input ic buf 0 len;
     decode_exn buf
   end

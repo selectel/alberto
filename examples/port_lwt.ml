@@ -16,9 +16,9 @@ end = struct
 
   let rec read_term ic =
     Lwt_io.BE.read_int ic >>= fun len ->
-    let buf = String.create len in
+    let buf = Bytes.create len in
     Lwt_io.read_into_exactly ic buf 0 len >>= fun _ ->
-    return (Alberto.decode_exn buf)
+    Bytes.to_string buf |> Alberto.decode_exn |> return
 
   and write_term oc term =
     let buf = Alberto.encode_exn term in
