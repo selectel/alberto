@@ -14,7 +14,7 @@ Flag examples
 
 Library alberto
   Path:            src
-  BuildDepends:    ocplib-endian, camlp4, num
+  BuildDepends:    ocplib-endian, camlp4, num, bytes
   Modules:         Alberto
   NativeOpt:       -w @a -warn-error -a
   ByteOpt:         -w @a -warn-error -a
@@ -25,9 +25,12 @@ Executable test
   Install:        false
   CompiledObject: best
   MainIs:         tests.ml
-  BuildDepends:   alberto, ocplib-endian, num, kaputt, kaputt.num
+  BuildDepends:   alberto, ocplib-endian, num, bytes, kaputt, kaputt.num
   NativeOpt:      -w @a -warn-error -a
   ByteOpt:        -w @a -warn-error -a
+
+Test test
+  Command:        $test
 
 Executable port_simple
   Path:           examples
@@ -45,6 +48,6 @@ Executable port_lwt
   Install:        false
   CompiledObject: best
   MainIs:         port_lwt.ml
-  BuildDepends:   alberto, ocplib-endian, lwt.unix, num
+  BuildDepends:   alberto, ocplib-endian, num, bytes, lwt.unix
   NativeOpt:      -w @a -warn-error -a
   ByteOpt:        -w @a -warn-error -a

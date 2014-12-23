@@ -16,9 +16,10 @@ end = struct
 
   let rec read_term ic =
     Lwt_io.BE.read_int ic >>= fun len ->
-    let buf = Bytes.create len in
+    (* The current version of lwt doesn't use -safe-string. *)
+    let buf = String.make len '\000' in
     Lwt_io.read_into_exactly ic buf 0 len >>= fun _ ->
-    Bytes.to_string buf |> Alberto.decode_exn |> return
+    return @@ Alberto.decode_exn buf
 
   and write_term oc term =
     let buf = Alberto.encode_exn term in

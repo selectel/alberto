@@ -124,14 +124,14 @@ module String = struct
   include String
 
   let resize s n =
-    let s' = make n '\000' in
+    let buf = Bytes.make n '\000' in
 
     if length s < n then
-      blit s 0 s' 0 (length s)
+      blit s 0 buf 0 (length s)
     else
-      blit s 0 s' 0 n;
+      blit s 0 buf 0 n;
 
-    s'
+    Bytes.to_string buf
 end
 
 
@@ -242,7 +242,7 @@ let rec parse = parser
    +------------+ *)
 
 let rec serialize buf term =
-  let add f x = Buffer.add_string buf <| f x in
+  let add f x = f x |> Buffer.add_bytes buf in
   let open Buffer in match term with
     | `Int n when n >= 0 && n < 256 ->
       begin add pack_byte 97; add pack_byte n end
@@ -416,7 +416,7 @@ let rec read_term ic =
     with End_of_file -> exit 0 in
   let buf = Bytes.create len in begin
     really_input ic buf 0 len;
-    decode_exn buf
+    decode_exn (Bytes.to_string buf)
   end
 
 and write_term oc term =

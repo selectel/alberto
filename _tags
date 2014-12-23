@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 9c7bf6597032dd98a5f1a8ffd01d4777)
+# DO NOT EDIT (digest: 035bab582f84ef13da6822d3ff977830)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -20,6 +20,7 @@ true: annot, bin_annot
 <src/*.ml{,i,y}>: oasis_library_alberto_byte
 <src/alberto.{cma,cmxa}>: oasis_library_alberto_native
 <src/*.ml{,i,y}>: oasis_library_alberto_native
+<src/*.ml{,i,y}>: package(bytes)
 <src/*.ml{,i,y}>: package(camlp4)
 <src/*.ml{,i,y}>: package(num)
 <src/*.ml{,i,y}>: package(ocplib-endian)
@@ -28,12 +29,14 @@ true: annot, bin_annot
 <*.ml{,i,y}>: oasis_executable_test_byte
 <tests.{native,byte}>: oasis_executable_test_native
 <*.ml{,i,y}>: oasis_executable_test_native
+<tests.{native,byte}>: package(bytes)
 <tests.{native,byte}>: package(camlp4)
 <tests.{native,byte}>: package(kaputt)
 <tests.{native,byte}>: package(kaputt.num)
 <tests.{native,byte}>: package(num)
 <tests.{native,byte}>: package(ocplib-endian)
 <tests.{native,byte}>: use_alberto
+<*.ml{,i,y}>: package(bytes)
 <*.ml{,i,y}>: package(camlp4)
 <*.ml{,i,y}>: package(kaputt)
 <*.ml{,i,y}>: package(kaputt.num)
@@ -45,6 +48,7 @@ true: annot, bin_annot
 <examples/*.ml{,i,y}>: oasis_executable_port_simple_byte
 <examples/port_simple.{native,byte}>: oasis_executable_port_simple_native
 <examples/*.ml{,i,y}>: oasis_executable_port_simple_native
+<examples/port_simple.{native,byte}>: package(bytes)
 <examples/port_simple.{native,byte}>: package(camlp4)
 <examples/port_simple.{native,byte}>: package(num)
 <examples/port_simple.{native,byte}>: package(ocplib-endian)
@@ -54,11 +58,13 @@ true: annot, bin_annot
 <examples/*.ml{,i,y}>: oasis_executable_port_lwt_byte
 <examples/port_lwt.{native,byte}>: oasis_executable_port_lwt_native
 <examples/*.ml{,i,y}>: oasis_executable_port_lwt_native
+<examples/port_lwt.{native,byte}>: package(bytes)
 <examples/port_lwt.{native,byte}>: package(camlp4)
 <examples/port_lwt.{native,byte}>: package(lwt.unix)
 <examples/port_lwt.{native,byte}>: package(num)
 <examples/port_lwt.{native,byte}>: package(ocplib-endian)
 <examples/port_lwt.{native,byte}>: use_alberto
+<examples/*.ml{,i,y}>: package(bytes)
 <examples/*.ml{,i,y}>: package(camlp4)
 <examples/*.ml{,i,y}>: package(lwt.unix)
 <examples/*.ml{,i,y}>: package(num)
@@ -66,3 +72,4 @@ true: annot, bin_annot
 <examples/*.ml{,i,y}>: use_alberto
 # OASIS_STOP
 "src/alberto.ml": syntax_camlp4o
+true: safe_string

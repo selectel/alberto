@@ -58,7 +58,7 @@ module ErlGen = struct
     (KaputtNums.Generator.big_int pos_int16)
   let new_reference = G.map1
     (fun (n, c) -> `NewReference
-        (n, c, Bytes.(to_string @@ create ((length n) * 4))))
+        (n, c, String.(make ((length n) * 4) '\000')))
     Alberto.to_string
     G.(zip2 (word pos_int8) pos_int8)
   let bit_binary = G.map1 (fun b -> `BitBinary b) Alberto.to_string
