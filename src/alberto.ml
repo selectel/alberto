@@ -26,7 +26,7 @@ let (<| ) f x = f x
 let failwithf fmt = Printf.kprintf failwith fmt
 
 
-(** Shortcuts for some of the Binary functions. *)
+(** Shortcuts for some of the binary functions. *)
 let pack_byte n =
   let buf = Bytes.create 1 in begin
     BE.set_int8 buf 0 n;
@@ -242,7 +242,15 @@ let rec parse = parser
    +------------+ *)
 
 let rec serialize buf term =
-  let add f x = f x |> Buffer.add_bytes buf in
+  let add f x =
+    let res = f x in
+    (* We have to use explicit loop, because of the Buffer API change
+       in OCaml>=4.02. *)
+    for i = 0 to Bytes.length res do
+      Buffer.add_char buf (Bytes.get res i)
+    done
+  in
+
   let open Buffer in match term with
     | `Int n when n >= 0 && n < 256 ->
       begin add pack_byte 97; add pack_byte n end
