@@ -246,7 +246,7 @@ let rec serialize buf term =
     let res = f x in
     (* We have to use explicit loop, because of the Buffer API change
        in OCaml>=4.02. *)
-    for i = 0 to Bytes.length res do
+    for i = 0 to Bytes.length res - 1 do
       Buffer.add_char buf (Bytes.get res i)
     done
   in
