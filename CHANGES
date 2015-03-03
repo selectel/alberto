@@ -3,6 +3,12 @@ alberto Changelog
 
 Here you can see the full list of changes between each alberto release.
 
+Version 0.4
+
+Bugfix release, released on March 3rd, 2015
+
+- Fixed an of-by-one error introduced after migration to 'safe_string'
+
 Version 0.3
 
 Bugfix release, relased on December 23rd, 2014

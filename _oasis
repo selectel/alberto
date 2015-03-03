@@ -1,7 +1,7 @@
 OASISFormat:  0.3
 OCamlVersion: >= 4.01.0
 Name:         alberto
-Version:      0.3
+Version:      0.4
 Synopsis:     OCaml interface to Erlang ports
 Authors:      Sergei Lebedev <superbobry@gmail.com>
 License:      LGPL-2.1 with OCaml linking exception

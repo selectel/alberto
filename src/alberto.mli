@@ -8,7 +8,7 @@
     for details.
 
     @author Sergei Lebedev <superbobry@gmail.com>
-    @version 0.1
+    @version 0.4
 *)
 
 open Big_int
