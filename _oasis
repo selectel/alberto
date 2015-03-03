@@ -16,8 +16,6 @@ Library alberto
   Path:            src
   BuildDepends:    ocplib-endian, camlp4, num, bytes
   Modules:         Alberto
-  NativeOpt:       -w @a -warn-error -a
-  ByteOpt:         -w @a -warn-error -a
 
 Executable test
   Path:           .
@@ -26,8 +24,6 @@ Executable test
   CompiledObject: best
   MainIs:         tests.ml
   BuildDepends:   alberto, ocplib-endian, num, bytes, kaputt, kaputt.num
-  NativeOpt:      -w @a -warn-error -a
-  ByteOpt:        -w @a -warn-error -a
 
 Test test
   Command:        $test
@@ -39,8 +35,6 @@ Executable port_simple
   CompiledObject: best
   MainIs:         port_simple.ml
   BuildDepends:   alberto, ocplib-endian, num
-  NativeOpt:      -w @a -warn-error -a
-  ByteOpt:        -w @a -warn-error -a
 
 Executable port_lwt
   Path:           examples
@@ -49,5 +43,3 @@ Executable port_lwt
   CompiledObject: best
   MainIs:         port_lwt.ml
   BuildDepends:   alberto, ocplib-endian, num, bytes, lwt.unix
-  NativeOpt:      -w @a -warn-error -a
-  ByteOpt:        -w @a -warn-error -a

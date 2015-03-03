@@ -8,6 +8,7 @@ Version 0.4
 Bugfix release, released on March 3rd, 2015
 
 - Fixed an of-by-one error introduced after migration to 'safe_string'
+- Disabled warnings-as-errors
 
 Version 0.3
 
