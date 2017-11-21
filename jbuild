@@ -1,0 +1,10 @@
+(jbuild_version 1)
+
+(executable
+ ((name tests)
+  (libraries (alberto ocplib-endian num bytes kaputt kaputt.num))))
+
+(alias
+ ((name runtest)
+  (deps (tests.exe))
+  (action (run ${<}))))

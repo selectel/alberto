@@ -3,14 +3,24 @@ alberto Changelog
 
 Here you can see the full list of changes between each alberto release.
 
+Version 0.5
+-----------
+
+Maintenance release, released on November 21st, 2017
+
+- Removed dependency on Camlp4
+- Switched from ocamlbuild and OASIS to jbuilder
+
 Version 0.4
+-----------
 
 Bugfix release, released on March 3rd, 2015
 
-- Fixed an of-by-one error introduced after migration to 'safe_string'
+- Fixed an off-by-one error introduced after migration to 'safe_string'
 - Disabled warnings-as-errors
 
 Version 0.3
+-----------
 
 Bugfix release, relased on December 23rd, 2014
 

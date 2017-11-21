@@ -1,0 +1,27 @@
+opam-version: "2.0"
+build: [
+  ["jbuilder" "build" "-p" name "-j" jobs]
+]
+depends: [
+  "ocplib-endian"
+  "jbuilder" {build & >= "1.0"}
+  "topkg-jbuilder" {build & >= "0.2.0"}
+  "topkg" {build & >= "0.9.0"}
+  "ocaml" {>= "4.01"}
+]
+
+author: "Sergei Lebedev"
+maintainer: "superbobry@gmail.com"
+homepage: "https://github.com/selectel/alberto"
+bug-reports: "https://github.com/selectel/alberto/issues"
+dev-repo: "git+https://github.com/selectel/alberto"
+license: "LGPL-2.1+ with OCaml linking exception"
+descr: """
+OCaml interface to Erlang ports
+
+Alberto is an implementation of
+[Erlang External Term Format](http://erlang.org/doc/apps/erts/erl_ext_dist.html),
+a protocol, used by Erlang nodes to communicate with so called *ports*. See
+Erlang [documentation](http://www.erlang.org/doc/tutorial/c_port.html) for
+details.
+"""

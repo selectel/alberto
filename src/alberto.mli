@@ -31,12 +31,15 @@ type t = [ `Int of int
 
 val encode : t -> string option
 (** [encode t] serializes a given Alberto term to a binary string. *)
+
 val decode : string -> t option
 (** [decode t] deserializes Alberto term from a binary string. *)
+
 
 val decode_exn : string -> t
 (** [encode_exn t] deserializes Alberto term from a binary string. Raises
     [Failure] if a given string doesn't contain a valid Alberto term. *)
+
 val encode_exn : t -> string
 (** [encode_exn t] serializes a given Alberto term to a binary string.
     Raises [Failure] if a given term can't be encoded. *)

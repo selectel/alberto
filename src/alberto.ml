@@ -141,82 +141,116 @@ end
 
 module S = Stream
 
-let rec parse = parser
-  (* SMALL_INTEGER_EXT: Unsigned 8 but integer. *)
-  | [< ''\097'; n = S.take_byte >] -> `Int n
+let rec parse s = match S.next s with
+  (* SMALL_INTEGER_EXT: Unsigned 8 bit integer. *)
+  | '\097' -> `Int (S.take_byte s)
 
   (* INTEGER_EXT: Signed 32 bit integer in big-endian format, i.e.
      MSB first. *)
-  | [< ''\098'; n = S.take_int32 >] -> `Int n
+  | '\098' -> `Int (S.take_int32 s)
 
   (* FLOAT_EXT: A float is stored in string format. the format used
      in sprintf to format the float is "%.20e". *)
-  | [< ''\099'; s = S.take_string 31 >] ->
-    let zeros = String.index s '\000' in
-    `Float (float_of_string <| String.sub s 0 zeros)
+  | '\099' ->
+     let blob = S.take_string 31 s in
+     let zeros = String.index blob '\000' in
+     `Float (float_of_string <| String.sub blob 0 zeros)
 
   (* ATOM_EXT *)
-  | [< ''\100'; len = S.take_word; st >] ->
-    if len < 256 then
-      `Atom (S.take_string len st)
-    else
-      failwithf "ATOM_EXT length exceeded %i > 256" len
+  | '\100' ->
+     let len = S.take_word s in
+     if len < 256
+     then `Atom (S.take_string len s)
+     else failwithf "ATOM_EXT length exceeded %i > 256" len
 
   (* REFERENCE_EXT *)
-  | [< ''\101'; node = parse; id = S.take_string 4; creation = S.take_byte >] ->
-    let node = match node with
-      | `Atom s -> s
-      | #t -> failwithf "Unexpected REFERENCE_EXT format"
-    in `Reference (node, id, creation)
+  | '\101' ->
+     let node = parse s in
+     let id = S.take_string 4 s in
+     let creation = S.take_byte s in
+     let node = match node with
+       | `Atom s -> s
+       | #t -> failwithf "Unexpected REFERENCE_EXT format"
+     in `Reference (node, id, creation)
 
   (* PORT_EXT *)
-  | [< ''\102'; node = parse; id = S.take_int32; creation = S.take_byte >] ->
-    let node = match node with
-      | `Atom s -> s
-      | #t -> failwithf "Unexpected PORT_EXT format"
-    in `Port (node, id, creation)
+  | '\102' ->
+     let node = parse s in
+     let id = S.take_int32 s in
+     let creation = S.take_byte s in
+     let node = match node with
+       | `Atom s -> s
+       | #t -> failwithf "Unexpected PORT_EXT format"
+     in `Port (node, id, creation)
 
   (* PID_EXT *)
-  | [< ''\103'; node = parse; id = S.take_string 4; serial = S.take_int32;
-       creation = S.take_byte >] ->
+  | '\103' ->
+    let node = parse s in
+    let id = S.take_string 4 s in
+    let serial = S.take_int32 s in
+    let creation = S.take_byte s in
     let node = match node with
       | `Atom s -> s
       | #t -> failwithf "Unexpected PID_EXT format"
     in `PID (node, id, serial, creation)
 
   (* SMALL_TUPLE_EXT *)
-  | [< ''\104'; arity = S.take_byte; elements = S.take_list arity parse >] ->
+  | '\104' ->
+     let arity = S.take_byte s in
+     let elements = S.take_list arity parse s in
     `Tuple elements
   (* LARGE_TUPLE_EXT *)
-  | [< ''\105'; arity = S.take_int32 ; elements = S.take_list arity parse >] ->
+  | '\105' ->
+    let arity = S.take_int32 s in
+    let elements = S.take_list arity parse s in
     `Tuple elements
 
   (* NIL_EXT *)
-  | [< ''\106' >] -> `List []
+  | '\106' -> `List []
   (* LIST_EXT *)
-  | [< ''\108'; len = S.take_int32; elements = S.take_list len parse;
-       ''\106'  (* NIL. *) >] -> `List elements
+  | '\108' ->
+     let len = S.take_int32 s in
+     let elements = S.take_list len parse s in
+     begin match S.next s with
+     (* NIL. *)
+     | '\106' -> `List elements
+     | _ -> failwith "Unexpected LIST_EXT format"
+     end
 
   (* STRING_EXT *)
-  | [< ''\107'; len = S.take_word; s = S.take_string len >] ->
-    `String s
+  | '\107' ->
+     let len = S.take_word s in
+     let blob = S.take_string len s in
+     `String blob
 
   (* BINARY_EXT *)
-  | [< ''\109'; len = S.take_int32; s = S.take_string len >] ->
+  | '\109' ->
+    let len = S.take_int32 s in
+    let blob = S.take_string len s in
     let buf = Buffer.create len in begin
-      Buffer.add_string buf s; `Binary buf
+      Buffer.add_string buf blob;
+      `Binary buf
     end
 
   (* SMALL_BIG_EXT *)
-  | [< ''\110'; len = S.take_byte; sign = S.take_byte; n = S.take_big len >] ->
+  | '\110' ->
+    let len = S.take_byte s in
+    let sign = S.take_byte s in
+    let n = S.take_big len s in
     `Bignum (if sign > 0 then minus_big_int n else n)
   (* LARGE_BIG_EXT *)
-  | [< ''\111'; len = S.take_int32; sign = S.take_byte; n = S.take_big len >] ->
+  | '\111' ->
+     let len = S.take_int32 s in
+     let sign = S.take_byte s in
+     let n = S.take_big len s in
     `Bignum (if sign > 0 then minus_big_int n else n)
 
   (* NEW_REFERENCE_EXT *)
-  | [< ''\114'; len = S.take_word; node = parse; creation = S.take_byte;
-       id = S.take_string (len * 4) >] ->
+  | '\114' ->
+    let len = S.take_word s in
+    let node = parse s in
+    let creation = S.take_byte s in
+    let id = S.take_string (len * 4) s in
     let node = match node with
       | `Atom s -> s
       | #t -> failwithf "Unexpected NEW_REFERENCE_EXT format"
@@ -227,14 +261,17 @@ let rec parse = parser
   (* EXPORT_EXT *)
 
   (* BIT_BINARY_EXT *)
-  | [< ''\077'; len = S.take_int32; bits = S.take_byte; s = S.take_string len >] ->
+  | '\077' ->
+    let len = S.take_int32 s in
+    let bits = S.take_byte s in
+    let blob = S.take_string len s in
     let buf = Buffer.create len in begin
-      Buffer.add_string buf s;
+      Buffer.add_string buf blob;
       `BitBinary (buf, bits)
     end
 
   (* Unknown tag? *)
-  | [< tag = S.take_string 1 >] -> invalid_arg tag
+  | tag -> invalid_arg (String.make 1 tag)
 
 
 (* +------------+
@@ -367,7 +404,8 @@ let decode_exn s =
   match s.[0] with
     | '\131' ->
       let stream = S.of_string s in
-      let (_ : char) = S.next stream in parse stream
+      let (_ : char) = S.next stream in
+      parse stream
     | n   ->
       failwithf "Erlang binary doesn't start with 131: %i" (int_of_char n)
 

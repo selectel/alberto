@@ -1,0 +1,8 @@
+(jbuild_version 1)
+
+(library
+ ((name alberto)
+  (public_name alberto)
+  (synopsis "OCaml interface to Erlang ports")
+  (libraries (ocplib-endian camlp4 num bytes))
+  (flags (:standard -safe-string))))
