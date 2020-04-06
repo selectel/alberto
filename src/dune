@@ -2,5 +2,5 @@
  (name alberto)
  (public_name alberto)
  (synopsis "OCaml interface to Erlang ports")
- (libraries ocplib-endian camlp4 num bytes)
+ (libraries ocplib-endian num bytes)
  (flags :standard -safe-string))
