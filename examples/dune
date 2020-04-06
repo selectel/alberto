@@ -1,0 +1,9 @@
+(executable
+ (name port_simple)
+ (modules port_simple)
+ (libraries alberto ocplib-endian))
+
+(executable
+ (name port_lwt)
+ (modules port_lwt)
+ (libraries alberto ocplib-endian bytes lwt.unix))
