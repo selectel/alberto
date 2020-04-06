@@ -62,13 +62,10 @@ Alberto.interact (fun x -> x)
 Okay, let's see it in action (sources are available in `examples/` directory):
 
 ```bash
-$ make
-$ examples/echo.erl ./port_simple.native
+$ dune build examples/port_simple.exe
+$ examples/echo.erl ./_build/default/examples/port_simple.exe
 echo.erl: "Hello world!"
 echo.erl: "Hello world!"
 echo.erl: "Hello world!"
 echo.erl: "Hello world!"
 ```
-
-**Note**: to build examples in the `examples/` directory configure
-`alberto` with `--enable-examples` flag.
